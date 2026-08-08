@@ -1,4 +1,4 @@
-const CACHE = 'gene-filter-v9-fixed-ui';
+const CACHE = 'gene-filter-v11-braf';
 
 const ASSETS = [
   './',
@@ -8,6 +8,8 @@ const ASSETS = [
   'manifest.json',
   'vendor/xlsx.full.min.js',
   'configs/index.json',
+  'configs/braf.json',
+  'configs/her2.json',
   'configs/kras.json',
   'configs/ros1.json',
   'configs/egfr.json',
