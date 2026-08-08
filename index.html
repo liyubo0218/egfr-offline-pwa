@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f2f2f7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="基因筛选">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-180.svg">
+  <link rel="stylesheet" href="style.css">
+  <title>基因筛选</title>
+</head>
+<body>
+  <main class="app-shell">
+    <header><p class="eyebrow">离线 Excel 工具</p><h1>基因筛选</h1><p class="subtitle">选择基因和 .xlsx 文件，结果仅在本机处理。</p></header>
+    <section class="card" aria-labelledby="gene-title">
+      <div class="section-heading"><h2 id="gene-title">筛选基因</h2><span id="configState" class="muted">正在读取配置…</span></div>
+      <div id="geneOptions" class="gene-options"></div>
+    </section>
+    <section id="dropZone" class="drop-zone" tabindex="0" role="button" aria-label="选择 Excel 文件或拖入文件">
+      <input id="fileInput" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
+      <div class="file-icon">⇧</div><strong>选择 Excel</strong><span>或将 .xlsx 文件拖到这里</span><small id="fileName">尚未选择文件</small>
+    </section>
+    <button id="startButton" class="primary" type="button" disabled>开始筛选</button>
+    <section id="progressPanel" class="card hidden" aria-live="polite"><div class="section-heading"><h2>处理进度</h2><span id="progressText">等待开始</span></div><div class="progress-track"><div id="progressBar" class="progress-bar"></div></div><p id="statusText" class="muted">请选择文件与基因。</p></section>
+    <section id="summaryPanel" class="card hidden"><h2>统计结果</h2><div id="summaryContent"></div></section>
+    <section id="downloadsPanel" class="card hidden"><h2>下载文件</h2><div id="downloadButtons" class="download-list"></div></section>
+  </main>
+  <script src="vendor/xlsx.full.min.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

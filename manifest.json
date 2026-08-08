@@ -1,0 +1,4 @@
+{
+  "name": "基因筛选（离线）", "short_name": "基因筛选", "start_url": "./", "display": "standalone", "background_color": "#f2f2f7", "theme_color": "#f2f2f7", "lang": "zh-CN",
+  "icons": [{ "src": "icons/icon-180.svg", "sizes": "180x180", "type": "image/svg+xml", "purpose": "any" }, { "src": "icons/icon-512.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any" }]
+}
