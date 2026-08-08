@@ -1,0 +1,7 @@
+{
+  "id": "egfr",
+  "name": "EGFR",
+  "outputFile": "EGFR.xlsx",
+  "includeKeywords": ["可能对EGFR-TKI", "EGFR基因扩增（阳性", "21外显子", "19外显子", "18外显子", "20外显子"],
+  "excludeKeywords": ["20外显子插入突变"]
+}
