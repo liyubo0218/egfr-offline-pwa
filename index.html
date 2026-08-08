@@ -9,17 +9,51 @@
   <title>肿瘤基因筛查</title>
 </head>
 <body>
-  <main class="container">
-    <h1>肿瘤基因筛查</h1>
-    <p>请选择筛查项目</p>
-    <div id="geneButtons" class="gene-grid"></div>
+  <main class="app-shell">
+    <header>
+      <div class="eyebrow">Excel Offline PWA</div>
+      <h1>肿瘤基因筛查</h1>
+      <p class="subtitle">选择一个或多个基因后，上传 Excel，系统会将所有工作表中的命中结果合并为独立的筛选结果。</p>
+    </header>
 
-    <section id="screeningPanel" hidden>
-      <h2 id="selectedGene"></h2>
-      <input id="fileInput" type="file" accept=".xlsx,.xls,.csv">
-      <button id="startBtn" type="button">开始筛查</button>
-      <button id="downloadBtn" type="button" hidden>下载筛选结果</button>
-      <div id="status"></div>
+    <section class="card">
+      <div class="section-heading">
+        <h2>筛查基因</h2>
+        <span id="configState" class="muted">正在加载配置…</span>
+      </div>
+      <div id="geneOptions" class="gene-options"></div>
+    </section>
+
+    <section class="card">
+      <div class="section-heading"><h2>选择 Excel 文件</h2></div>
+      <input id="fileInput" type="file" accept=".xlsx" hidden>
+      <div id="dropZone" class="drop-zone" tabindex="0" role="button" aria-label="选择或拖入 Excel 文件">
+        <div class="file-icon">⌘</div>
+        <strong>点击选择或拖入 Excel 文件</strong>
+        <span id="fileName">尚未选择文件</span>
+        <small>仅支持 .xlsx</small>
+      </div>
+    </section>
+
+    <button id="startButton" class="primary" type="button" disabled>开始筛查</button>
+
+    <section id="progressPanel" class="card hidden">
+      <div class="section-heading">
+        <h2>处理进度</h2>
+        <span id="progressText" class="muted">0%</span>
+      </div>
+      <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+      <p id="statusText" class="muted">等待开始</p>
+    </section>
+
+    <section id="summaryPanel" class="card hidden">
+      <div class="section-heading"><h2>筛查结果</h2></div>
+      <div id="summaryContent"></div>
+    </section>
+
+    <section id="downloadsPanel" class="card hidden">
+      <div class="section-heading"><h2>下载结果</h2></div>
+      <div id="downloadButtons" class="download-list"></div>
     </section>
   </main>
 
