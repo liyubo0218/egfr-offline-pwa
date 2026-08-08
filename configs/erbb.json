@@ -1,0 +1,23 @@
+{
+  "id": "erbb",
+  "name": "ERBB2",
+  "outputFile": "erbb.xlsx",
+  "includeKeywordGroupsAny": [
+    [
+      "肺",
+      "HER2(4B5)（3"
+    ],
+    [
+      "肺",
+      "HER2（3"
+    ],
+    [
+      "携带ERBB2基因"
+    ],
+    [
+      "T-DXd"
+    ]
+  ],
+  "includeKeywords": [],
+  "excludeKeywords": []
+}

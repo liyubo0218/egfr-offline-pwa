@@ -9,3 +9,10 @@ header { padding: 5px 3px 20px; } h1 { margin:0; font-size:34px; letter-spacing:
 .progress-track { height:8px; overflow:hidden; background:#e5e5ea; border-radius:99px; margin:10px 0; }.progress-bar { height:100%; width:0; background:#0a7aff; border-radius:inherit; transition:width .2s; }
 .stats { width:100%; border-collapse:collapse; font-size:13px; }.stats th,.stats td { padding:9px 5px; border-bottom:1px solid #e5e5ea; text-align:right; }.stats th:first-child,.stats td:first-child { text-align:left; }.total-row { font-weight:700; }.download-list { display:grid; gap:9px; }.download { text-align:left; color:#0a7aff; background:#eef6ff; border:0; border-radius:11px; padding:13px; font-weight:600; cursor:pointer; }
 @media (prefers-color-scheme: dark) { :root,body { background:#000; color:#f5f5f7; }.card,.drop-zone { background:#1c1c1e; box-shadow:none; }.gene-option { background:#2c2c2e; }.drop-zone { border-color:#48484a; }.drop-zone.dragging,.drop-zone:focus { background:#0b315b; }.muted,.subtitle,.drop-zone span,.drop-zone small { color:#98989f; }.progress-track { background:#3a3a3c; } .stats th,.stats td { border-color:#3a3a3c; } }
+
+.container{max-width:760px;margin:0 auto;padding:28px 18px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+.gene-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:20px 0}
+.gene-grid button{min-height:72px;border:1px solid #ddd;border-radius:16px;background:#fff;font-size:20px;font-weight:600}
+#screeningPanel{margin-top:20px;padding:18px;border-radius:16px;background:#f6f7f9}
+#screeningPanel button{margin:10px 8px 0 0;padding:12px 18px;border:0;border-radius:12px}
+#status{margin-top:14px;white-space:pre-wrap}

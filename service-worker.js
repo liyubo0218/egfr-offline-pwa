@@ -1,4 +1,4 @@
-const CACHE = 'gene-filter-v3';
+const CACHE = 'gene-filter-v5-ros1';
 
 const ASSETS = [
   './',
@@ -8,7 +8,12 @@ const ASSETS = [
   'manifest.json',
   'vendor/xlsx.full.min.js',
   'configs/index.json',
+  'configs/kras.json',
+  'configs/ros1.json',
   'configs/egfr.json',
+  'configs/alk.json',
+  'configs/erbb.json',
+  
   'icons/icon-180.svg',
   'icons/icon-512.svg'
 ];

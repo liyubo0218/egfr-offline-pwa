@@ -1,0 +1,9 @@
+{
+  "id": "ros1",
+  "name": "ROS1",
+  "outputFile": "ros1.xlsx",
+  "includeKeywords": [
+    "ROS1基因"
+  ],
+  "excludeKeywords": []
+}
