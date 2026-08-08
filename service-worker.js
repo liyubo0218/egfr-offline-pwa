@@ -1,4 +1,4 @@
-const CACHE = 'gene-filter-v5-ros1';
+const CACHE = 'gene-filter-v8-all-genes';
 
 const ASSETS = [
   './',
