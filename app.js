@@ -23,34 +23,31 @@ function rowMatches(row, impressionIndex, includeKeywords, excludeKeywords, conf
     includeKeywords: includeKeywords || [],
     excludeKeywords: excludeKeywords || []
   };
-  const text = Object.values(row).map(v => String(v ?? "")).join(" ");
+  const text = normalizeText(Object.values(row).map((v) => String(v ?? '')).join(' '));
 
-  const anyGroups = Array.isArray(config.includeKeywordGroupsAny)
-    ? config.includeKeywordGroupsAny : [];
+  const anyGroups = Array.isArray(config.includeKeywordGroupsAny) ? config.includeKeywordGroupsAny : [];
   if (anyGroups.length) {
-    const matched = anyGroups.some(group =>
+    const matched = anyGroups.some((group) =>
       Array.isArray(group) && group.length &&
-      group.every(k => text.includes(String(k)))
+      group.every((keyword) => keywordMatch(text, keyword))
     );
     if (!matched) return false;
   } else {
-    const groups = Array.isArray(config.includeKeywordGroups)
-      ? config.includeKeywordGroups : [];
+    const groups = Array.isArray(config.includeKeywordGroups) ? config.includeKeywordGroups : [];
     if (groups.length) {
-      const matched = groups.every(group =>
+      const matched = groups.every((group) =>
         Array.isArray(group) && group.length &&
-        group.some(k => text.includes(String(k)))
+        group.some((keyword) => keywordMatch(text, keyword))
       );
       if (!matched) return false;
     } else {
       const includes = config.includeKeywords || [];
-      if (includes.length && !includes.some(k => text.includes(String(k)))) return false;
+      if (includes.length && !includes.some((keyword) => keywordMatch(text, keyword))) return false;
     }
   }
 
   const excludes = config.excludeKeywords || [];
-  if (excludes.some(k => text.includes(String(k)))) return false;
-
+  if (excludes.some((keyword) => keywordMatch(text, keyword))) return false;
   return true;
 }
 function nonEmptyRow(row) { return row.some((cell) => cell !== null && cell !== undefined && String(cell).trim() !== ''); }
@@ -103,11 +100,11 @@ function buildSingleGeneWorkbook(sourceWorkbook, config, onProgress) {
       const row = values[rowIndex];
       if (!nonEmptyRow(row)) continue;
       const impression = normalizeText(row[impressionIndex]);
-      const includes = includeKeywords.some((keyword) => keywordMatch(impression, keyword));
-      const excludes = excludeKeywords.some((keyword) => keywordMatch(impression, keyword));
+      const includes = rowMatches(row, impressionIndex, includeKeywords, excludeKeywords, config);
+      const excludes = (excludeKeywords || []).some((keyword) => keywordMatch(impression, keyword));
       if (includes) includeHits += 1;
       if (includes && excludes) excludedByKeyword += 1;
-      if (rowMatches(row, impressionIndex, includeKeywords, excludeKeywords)) { matched += 1; outputRows.push(row.slice(0, outputHeaders.length)); }
+      if (includes) { matched += 1; outputRows.push(row.slice(0, outputHeaders.length)); }
     }
     sheetSummaries.push({ sheet: sheetName, headerRow: headerRowIndex + 1, impressionColumn: columnLetter(impressionIndex), rowsScanned: values.length - headerRowIndex - 1, includeHits, excludedByKeyword, matched, skipped: false });
     onProgress((sheetIndex + 1) / sourceWorkbook.SheetNames.length);
@@ -167,105 +164,3 @@ ui.dropZone.addEventListener('click', () => ui.fileInput.click()); ui.dropZone.a
 ['dragenter', 'dragover'].forEach((type) => ui.dropZone.addEventListener(type, (e) => { e.preventDefault(); ui.dropZone.classList.add('dragging'); })); ['dragleave', 'drop'].forEach((type) => ui.dropZone.addEventListener(type, (e) => { e.preventDefault(); ui.dropZone.classList.remove('dragging'); })); ui.dropZone.addEventListener('drop', (e) => setFile(e.dataTransfer.files[0])); ui.start.addEventListener('click', processWorkbook);
 if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('service-worker.js'));
 loadConfigurations().catch((error) => { console.error(error); ui.configState.textContent = '配置读取失败'; setProgress(0, '无法读取基因配置，请通过 HTTP/HTTPS 服务打开本应用。'); });
-
-/* Unified gene-screening UI */
-document.addEventListener("DOMContentLoaded", async () => {
-  const geneButtons = document.getElementById("geneButtons");
-  const panel = document.getElementById("screeningPanel");
-  const selectedGeneEl = document.getElementById("selectedGene");
-  const fileInput = document.getElementById("fileInput");
-  const startBtn = document.getElementById("startBtn");
-  const downloadBtn = document.getElementById("downloadBtn");
-  const status = document.getElementById("status");
-  if (!geneButtons) return;
-
-  let configs = [];
-  let selected = null;
-  let lastBlob = null;
-
-  try {
-    const idx = await fetch("configs/index.json").then(r => r.json());
-    configs = await Promise.all(idx.map(async item => ({
-      ...item,
-      config: await fetch("configs/" + item.file).then(r => r.json())
-    })));
-  } catch (e) {
-    status.textContent = "配置加载失败：" + e.message;
-    return;
-  }
-
-  configs.forEach(item => {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.textContent = item.name;
-    b.addEventListener("click", () => {
-      selected = item;
-      selectedGeneEl.textContent = "当前筛查：" + item.name;
-      panel.hidden = false;
-      downloadBtn.hidden = true;
-      lastBlob = null;
-      status.textContent = "";
-    });
-    geneButtons.appendChild(b);
-  });
-
-  startBtn.addEventListener("click", async () => {
-    if (!selected) return alert("请先选择筛查项目");
-    const file = fileInput.files && fileInput.files[0];
-    if (!file) return alert("请选择 Excel 文件");
-    if (typeof XLSX === "undefined") {
-      status.textContent = "处理失败：XLSX 未加载，请检查 vendor/xlsx.full.min.js";
-      return;
-    }
-
-    try {
-      status.textContent = "正在读取并筛查，请稍候……";
-      const data = await file.arrayBuffer();
-      const wb = XLSX.read(data, {type:"array"});
-      const rows = [];
-
-      wb.SheetNames.forEach(name => {
-        const ws = wb.Sheets[name];
-        const arr = XLSX.utils.sheet_to_json(ws, {header:1, defval:""});
-        if (!arr.length) return;
-        const header = arr[0];
-        for (let i=1;i<arr.length;i++) {
-          const vals = arr[i];
-          const row = {};
-          header.forEach((h,j)=>{ row[h || ("列"+(j+1))] = vals[j] ?? ""; });
-          if (rowMatches(row, 0, null, null, selected.config)) rows.push(vals);
-        }
-      });
-
-      const outWb = XLSX.utils.book_new();
-      // Keep the first non-empty sheet's header as the common header.
-      let header = null;
-      for (const name of wb.SheetNames) {
-        const arr = XLSX.utils.sheet_to_json(wb.Sheets[name], {header:1, defval:""});
-        if (arr.length) { header = arr[0]; break; }
-      }
-      header = header || [];
-      for (let i=rows.length-1;i>0;i--) {
-        const j = Math.floor(Math.random()*(i+1));
-        [rows[i],rows[j]] = [rows[j],rows[i]];
-      }
-      const outWs = XLSX.utils.aoa_to_sheet([header, ...rows]);
-      XLSX.utils.book_append_sheet(outWb, outWs, "筛选结果");
-      const bytes = XLSX.write(outWb, {bookType:"xlsx", type:"array"});
-      lastBlob = new Blob([bytes], {type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
-      downloadBtn.hidden = false;
-      status.textContent = `筛查完成：共找到 ${rows.length} 条记录。`;
-    } catch (e) {
-      status.textContent = "处理失败：" + e.message;
-    }
-  });
-
-  downloadBtn.addEventListener("click", () => {
-    if (!lastBlob || !selected) return;
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(lastBlob);
-    a.download = selected.config.outputFile || (selected.id + ".xlsx");
-    a.click();
-    setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-  });
-});
