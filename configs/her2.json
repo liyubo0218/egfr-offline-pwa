@@ -1,0 +1,20 @@
+{
+  "id": "her2",
+  "name": "HER2",
+  "outputFile": "her2.xlsx",
+  "includeKeywords": [
+    "Her-2",
+    "HER2(4B5)"
+  ],
+  "excludeKeywords": [
+    "HER2基因无扩增",
+    "建议行EGFR",
+    "Her-2（0",
+    "HER2(4B5)（0",
+    "乳腺",
+    "左乳",
+    "右乳",
+    "左侧乳",
+    "右侧乳"
+  ]
+}

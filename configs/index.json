@@ -23,5 +23,15 @@
     "id": "erbb",
     "name": "ERBB2",
     "file": "erbb.json"
+  },
+  {
+    "id": "her2",
+    "name": "HER2",
+    "file": "her2.json"
+  },
+  {
+    "id": "braf",
+    "name": "BRAF",
+    "file": "braf.json"
   }
 ]

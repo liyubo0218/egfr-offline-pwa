@@ -1,0 +1,10 @@
+{
+  "id": "braf",
+  "name": "BRAF",
+  "outputFile": "Brad.xlsx",
+  "includeKeywords": [
+    "检测到BRAF基因",
+    "携带BRAF基因"
+  ],
+  "excludeKeywords": []
+}
