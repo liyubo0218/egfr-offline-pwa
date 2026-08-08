@@ -1,0 +1,27 @@
+[
+  {
+    "id": "alk",
+    "name": "ALK",
+    "file": "alk.json"
+  },
+  {
+    "id": "egfr",
+    "name": "EGFR",
+    "file": "egfr.json"
+  },
+  {
+    "id": "ros1",
+    "name": "ROS1",
+    "file": "ros1.json"
+  },
+  {
+    "id": "kras",
+    "name": "KRAS",
+    "file": "kras.json"
+  },
+  {
+    "id": "erbb",
+    "name": "ERBB2",
+    "file": "erbb.json"
+  }
+]

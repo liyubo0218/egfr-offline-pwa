@@ -1,0 +1,13 @@
+{
+  "id": "alk",
+  "name": "ALK",
+  "outputFile": "ALK.xlsx",
+  "includeKeywords": [
+    "ALK增强免疫组化结果",
+    "ALK基因融合",
+    "ALK 基因发生断裂（阳性）"
+  ],
+  "excludeKeywords": [
+    "ALK增强免疫组化结果：阴性"
+  ]
+}

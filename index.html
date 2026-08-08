@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <title>肿瘤基因筛查</title>
+</head>
+<body>
+  <main class="container">
+    <h1>肿瘤基因筛查</h1>
+    <p>请选择筛查项目</p>
+    <div id="geneButtons" class="gene-grid"></div>
+
+    <section id="screeningPanel" hidden>
+      <h2 id="selectedGene"></h2>
+      <input id="fileInput" type="file" accept=".xlsx,.xls,.csv">
+      <button id="startBtn" type="button">开始筛查</button>
+      <button id="downloadBtn" type="button" hidden>下载筛选结果</button>
+      <div id="status"></div>
+    </section>
+  </main>
+
+  <script src="vendor/xlsx.full.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
